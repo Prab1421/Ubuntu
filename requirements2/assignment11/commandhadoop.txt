@@ -1,0 +1,66 @@
+~/3356/assignment11$ start-dfs.sh
+Starting namenodes on [localhost]
+localhost: namenode is running as process 2509.  Stop it first and ensure /tmp/hadoop-hdoop-namenode.pid file is empty before retry.
+Starting datanodes
+localhost: datanode is running as process 2671.  Stop it first and ensure /tmp/hadoop-hdoop-datanode.pid file is empty before retry.
+Starting secondary namenodes [csl4-HP-280-G3-MT]
+csl4-HP-280-G3-MT: secondarynamenode is running as process 2905.  Stop it first and ensure /tmp/hadoop-hdoop-secondarynamenode.pid file is empty before retry.
+hdoop@csl4-HP-280-G3-MT:~/3356/assignment11$ start-yarn.sh
+Starting resourcemanager
+resourcemanager is running as process 3205.  Stop it first and ensure /tmp/hadoop-hdoop-resourcemanager.pid file is empty before retry.
+Starting nodemanagers
+localhost: nodemanager is running as process 3372.  Stop it first and ensure /tmp/hadoop-hdoop-nodemanager.pid file is empty before retry.
+hdoop@csl4-HP-280-G3-MT:~/3356/assignment11$ jps
+3205 ResourceManager
+2905 SecondaryNameNode
+3372 NodeManager
+2509 NameNode
+4958 Jps
+2671 DataNode
+hdoop@csl4-HP-280-G3-MT:~/3356/assignment11$ hadoop jar wordcount.jar WordCount /user/hdoop/input.txt /user/hdoop/output
+2025-04-11 16:13:16,423 INFO impl.MetricsConfig: Loaded properties from hadoop-metrics2.properties
+2025-04-11 16:13:16,491 INFO impl.MetricsSystemImpl: Scheduled Metric snapshot period at 10 second(s).
+2025-04-11 16:13:16,491 INFO impl.MetricsSystemImpl: JobTracker metrics system started
+Exception in thread "main" org.apache.hadoop.mapred.FileAlreadyExistsException: Output directory hdfs://127.0.0.1:9000/user/hdoop/output already exists
+	at org.apache.hadoop.mapreduce.lib.output.FileOutputFormat.checkOutputSpecs(FileOutputFormat.java:164)
+	at org.apache.hadoop.mapreduce.JobSubmitter.checkSpecs(JobSubmitter.java:278)
+	at org.apache.hadoop.mapreduce.JobSubmitter.submitJobInternal(JobSubmitter.java:142)
+	at org.apache.hadoop.mapreduce.Job$11.run(Job.java:1677)
+	at org.apache.hadoop.mapreduce.Job$11.run(Job.java:1674)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:422)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1953)
+	at org.apache.hadoop.mapreduce.Job.submit(Job.java:1674)
+	at org.apache.hadoop.mapreduce.Job.waitForCompletion(Job.java:1695)
+	at WordCount.main(WordCount.java:53)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.apache.hadoop.util.RunJar.run(RunJar.java:330)
+	at org.apache.hadoop.util.RunJar.main(RunJar.java:245)
+hdoop@csl4-HP-280-G3-MT:~/3356/assignment11$ hdfs dfs -ls /user/hdoop/output
+Found 2 items
+-rw-r--r--   3 hdoop supergroup          0 2025-04-01 09:51 /user/hdoop/output/_SUCCESS
+-rw-r--r--   3 hdoop supergroup        126 2025-04-01 09:51 /user/hdoop/output/part-r-00000
+hdoop@csl4-HP-280-G3-MT:~/3356/assignment11$ hdfs dfs -cat /user/hdoop/output/part-r-00000
+Ram	3
+a	1
+boy.	1
+costly.	1
+eat	1
+ghee	1
+ghee.	1
+goes	1
+good	1
+is	3
+ladoo	1
+ladoo.	1
+loves	1
+made	1
+of	1
+school.	1
+to	2
+very	1
+hdoop@csl4-HP-280-G3-MT:~/3356/assignment11$ 
+

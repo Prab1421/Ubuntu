@@ -1,0 +1,105 @@
+csl-4@csl4-V520-15IKL:~/hadoop13$ # Compile
+csl-4@csl4-V520-15IKL:~/hadoop13$ javac -classpath $(hadoop classpath) -d . WeatherAnalysis.java
+csl-4@csl4-V520-15IKL:~/hadoop13$ 
+csl-4@csl4-V520-15IKL:~/hadoop13$ # Package
+csl-4@csl4-V520-15IKL:~/hadoop13$ jar -cvf WeatherAnalysis.jar *.class
+added manifest
+adding: WeatherAnalysis$WeatherMapper.class(in = 1963) (out= 864)(deflated 55%)
+adding: WeatherAnalysis$WeatherReducer.class(in = 1708) (out= 721)(deflated 57%)
+adding: WeatherAnalysis.class(in = 1654) (out= 898)(deflated 45%)
+csl-4@csl4-V520-15IKL:~/hadoop13$ 
+csl-4@csl4-V520-15IKL:~/hadoop13$ # Delete previous output
+csl-4@csl4-V520-15IKL:~/hadoop13$ hdfs dfs -rm -r /user/hadoop/output
+Deleted /user/hadoop/output
+csl-4@csl4-V520-15IKL:~/hadoop13$ 
+csl-4@csl4-V520-15IKL:~/hadoop13$ # Run the job
+csl-4@csl4-V520-15IKL:~/hadoop13$ hadoop jar WeatherAnalysis.jar WeatherAnalysis /user/hadoop/input /user/hadoop/output
+2025-04-11 16:54:22,612 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032
+2025-04-11 16:54:22,838 WARN mapreduce.JobResourceUploader: Hadoop command-line option parsing not performed. Implement the Tool interface and execute your application with ToolRunner to remedy this.
+2025-04-11 16:54:22,860 INFO mapreduce.JobResourceUploader: Disabling Erasure Coding for path: /tmp/hadoop-yarn/staging/csl-4/.staging/job_1744369179369_0004
+2025-04-11 16:54:23,027 INFO input.FileInputFormat: Total input files to process : 2
+2025-04-11 16:54:23,109 INFO mapreduce.JobSubmitter: number of splits:2
+2025-04-11 16:54:23,201 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1744369179369_0004
+2025-04-11 16:54:23,202 INFO mapreduce.JobSubmitter: Executing with tokens: []
+2025-04-11 16:54:23,312 INFO conf.Configuration: resource-types.xml not found
+2025-04-11 16:54:23,312 INFO resource.ResourceUtils: Unable to find 'resource-types.xml'.
+2025-04-11 16:54:23,353 INFO impl.YarnClientImpl: Submitted application application_1744369179369_0004
+2025-04-11 16:54:23,382 INFO mapreduce.Job: The url to track the job: http://csl4-V520-15IKL:8088/proxy/application_1744369179369_0004/
+2025-04-11 16:54:23,382 INFO mapreduce.Job: Running job: job_1744369179369_0004
+2025-04-11 16:54:28,438 INFO mapreduce.Job: Job job_1744369179369_0004 running in uber mode : false
+2025-04-11 16:54:28,440 INFO mapreduce.Job:  map 0% reduce 0%
+2025-04-11 16:54:32,480 INFO mapreduce.Job:  map 50% reduce 0%
+2025-04-11 16:54:36,495 INFO mapreduce.Job:  map 100% reduce 0%
+2025-04-11 16:54:38,506 INFO mapreduce.Job:  map 100% reduce 100%
+2025-04-11 16:54:39,527 INFO mapreduce.Job: Job job_1744369179369_0004 completed successfully
+2025-04-11 16:54:39,583 INFO mapreduce.Job: Counters: 55
+	File System Counters
+		FILE: Number of bytes read=122000018
+		FILE: Number of bytes written=183709637
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=104138402
+		HDFS: Number of bytes written=87
+		HDFS: Number of read operations=11
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+		HDFS: Number of bytes read erasure-coded=0
+	Job Counters 
+		Killed map tasks=1
+		Launched map tasks=3
+		Launched reduce tasks=1
+		Data-local map tasks=3
+		Total time spent by all maps in occupied slots (ms)=8261
+		Total time spent by all reduces in occupied slots (ms)=4384
+		Total time spent by all map tasks (ms)=8261
+		Total time spent by all reduce tasks (ms)=4384
+		Total vcore-milliseconds taken by all map tasks=8261
+		Total vcore-milliseconds taken by all reduce tasks=4384
+		Total megabyte-milliseconds taken by all map tasks=8459264
+		Total megabyte-milliseconds taken by all reduce tasks=4489216
+	Map-Reduce Framework
+		Map input records=1001002
+		Map output records=3000000
+		Map output bytes=55000000
+		Map output materialized bytes=61000012
+		Input split bytes=235
+		Combine input records=0
+		Combine output records=0
+		Reduce input groups=3
+		Reduce shuffle bytes=61000012
+		Reduce input records=3000000
+		Reduce output records=3
+		Spilled Records=9000000
+		Shuffled Maps =2
+		Failed Shuffles=0
+		Merged Map outputs=2
+		GC time elapsed (ms)=179
+		CPU time spent (ms)=9530
+		Physical memory (bytes) snapshot=1020071936
+		Virtual memory (bytes) snapshot=7686434816
+		Total committed heap usage (bytes)=890241024
+		Peak Map Physical memory (bytes)=486989824
+		Peak Map Virtual memory (bytes)=2563604480
+		Peak Reduce Physical memory (bytes)=243650560
+		Peak Reduce Virtual memory (bytes)=2565324800
+	Shuffle Errors
+		BAD_ID=0
+		CONNECTION=0
+		IO_ERROR=0
+		WRONG_LENGTH=0
+		WRONG_MAP=0
+		WRONG_REDUCE=0
+	File Input Format Counters 
+		Bytes Read=104138167
+	File Output Format Counters 
+		Bytes Written=87
+csl-4@csl4-V520-15IKL:~/hadoop13$ 
+csl-4@csl4-V520-15IKL:~/hadoop13$ # Check the output
+csl-4@csl4-V520-15IKL:~/hadoop13$ hdfs dfs -cat /user/hadoop/output/part-r-00000
+Humidity	60.02182955554202
+Temperature	14.779704927042644
+WindSpeed	14.997598129281746
+csl-4@csl4-V520-15IKL:~/hadoop13$ 
+
+
